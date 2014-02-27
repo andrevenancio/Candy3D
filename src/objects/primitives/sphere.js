@@ -6,7 +6,7 @@
 CANDY3D.Sphere = function(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength) {
   CANDY3D.Mesh.call(this);
 
-  this.radius = radius = radius || 50;
+  this.radius = radius = radius || 100;
 
   this.widthSegments = widthSegments = Math.max(3, Math.floor(widthSegments) || 8);
   this.heightSegments = heightSegments = Math.max(2, Math.floor(heightSegments) || 6);
@@ -16,6 +16,8 @@ CANDY3D.Sphere = function(radius, widthSegments, heightSegments, phiStart, phiLe
 
   this.thetaStart = thetaStart = thetaStart !== undefined ? thetaStart : 0;
   this.thetaLength = thetaLength = thetaLength !== undefined ? thetaLength : Math.PI;
+
+  this.build(this.radius, this.widthSegments, this.heightSegments, this.phiStart, this.phiLength, this.thetaStart, this.thetaLength);
 
 };
 CANDY3D.inherits(CANDY3D.Sphere, CANDY3D.Mesh);
