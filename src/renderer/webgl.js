@@ -76,10 +76,10 @@ CANDY3D.WebGLRenderer.prototype.render = function(scene, camera) {
     var scaleMatrix = CANDY3D.Matrix4.scale(element.scale.x, element.scale.y, element.scale.z);
 
     // Multiply the matrices.
-    var matrix = CANDY3D.Matrix4.multiply(scaleMatrix, translationMatrix);
-    matrix = CANDY3D.Matrix4.multiply(matrix, rotationZMatrix);
+    var matrix = CANDY3D.Matrix4.multiply(scaleMatrix, rotationZMatrix);
     matrix = CANDY3D.Matrix4.multiply(matrix, rotationYMatrix);
     matrix = CANDY3D.Matrix4.multiply(matrix, rotationXMatrix);
+    matrix = CANDY3D.Matrix4.multiply(matrix, translationMatrix);
     matrix = CANDY3D.Matrix4.multiply(matrix, viewMatrix);
     matrix = CANDY3D.Matrix4.multiply(matrix, projectionMatrix);
 
@@ -118,9 +118,10 @@ CANDY3D.WebGLRenderer.prototype.buildProgram = function(element) {
   element.geometry.sbuffer = new Float32Array(element.geometry.vbuffer.length);
 
   for (var k = 0; k < element.geometry.sbuffer.length; k += 3) {
-    element.geometry.sbuffer[k + 0] = Math.random() * 255;
-    element.geometry.sbuffer[k + 1] = Math.random() * 255;
-    element.geometry.sbuffer[k + 2] = Math.random() * 255;
+    var r = Math.random();
+    element.geometry.sbuffer[k + 0] = r * 255;
+    element.geometry.sbuffer[k + 1] = r * 255;
+    element.geometry.sbuffer[k + 2] = r * 255;
   }
 
   //TODO: check the material, and depending on that, change program
