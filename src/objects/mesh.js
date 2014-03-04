@@ -14,7 +14,9 @@ CANDY3D.Mesh = function() {
     vbuffer: null,
     sbuffer: null,
     program: null,
-    uniforms: null
+    uniforms: null,
+    b1: null,
+    b2: null
   };
 };
 CANDY3D.inherits(CANDY3D.Mesh, CANDY3D.Object3D);

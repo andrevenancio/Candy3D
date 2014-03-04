@@ -14,7 +14,7 @@ CANDY3D.Scene.prototype.add = function(mesh) {
     folder.add(mesh, 'uid').name('guid');
 
     var scale = folder.addFolder('scale');
-    scale.add(mesh.scale, 'x', -1, 1);
+    scale.add(mesh.scale, 'x', -1, 1).step(0.1);
     scale.add(mesh.scale, 'y', -1, 1);
     scale.add(mesh.scale, 'z', -1, 1);
 
@@ -24,7 +24,7 @@ CANDY3D.Scene.prototype.add = function(mesh) {
     position.add(mesh.position, 'z', -500, 500);
 
     var rotation = folder.addFolder('rotation');
-    rotation.add(mesh.rotation, 'x', -360 * Math.PI / 180, 360 * Math.PI / 180);
+    rotation.add(mesh.rotation, 'x', -360 * Math.PI / 180, 360 * Math.PI / 180).step(0.01);
     rotation.add(mesh.rotation, 'y', -360 * Math.PI / 180, 360 * Math.PI / 180);
     rotation.add(mesh.rotation, 'z', -360 * Math.PI / 180, 360 * Math.PI / 180);
   }

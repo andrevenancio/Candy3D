@@ -8,7 +8,7 @@ var CANDY3D = CANDY3D || {
   name: 'Candy3D',
   version: '0.0.1',
   settings: {
-    preserveDrawingBuffer: false,
+    preserveDrawingBuffer: true,
     premultipliedAlpha: true,
     antialias: true,
     stencil: true,
