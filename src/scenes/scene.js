@@ -5,6 +5,7 @@
 
 CANDY3D.Scene = function() {
   this.children = [];
+  this.lights = [];
 };
 
 
@@ -25,8 +26,8 @@ CANDY3D.Scene.prototype.add = function(mesh) {
 
     var rotation = folder.addFolder('rotation');
     rotation.add(mesh.rotation, 'x', -360 * Math.PI / 180, 360 * Math.PI / 180).step(0.01);
-    rotation.add(mesh.rotation, 'y', -360 * Math.PI / 180, 360 * Math.PI / 180);
-    rotation.add(mesh.rotation, 'z', -360 * Math.PI / 180, 360 * Math.PI / 180);
+    rotation.add(mesh.rotation, 'y', -360 * Math.PI / 180, 360 * Math.PI / 180).step(0.01);
+    rotation.add(mesh.rotation, 'z', -360 * Math.PI / 180, 360 * Math.PI / 180).step(0.01);
   }
 
   this.children.push(mesh);
@@ -43,4 +44,8 @@ CANDY3D.Scene.prototype.remove = function(guid) {
       break;
     }
   }
+};
+
+CANDY3D.Scene.prototype.addLight = function(light) {
+  this.lights.push(light);
 };

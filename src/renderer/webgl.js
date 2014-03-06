@@ -24,8 +24,8 @@ CANDY3D.WebGLRenderer.prototype.init = function() {
   });
   //this.gl.enable(this.gl.CULL_FACE);
   //this.gl.cullFace(this.gl.BACK);
-  //this.gl.frontFace(this.gl.CW);
-  //this.gl.enable(this.gl.DEPTH_TEST);
+  this.gl.frontFace(this.gl.CCW);
+  this.gl.enable(this.gl.DEPTH_TEST);
 
   this.resize();
   console.log(CANDY3D.name, CANDY3D.version);
@@ -89,9 +89,9 @@ CANDY3D.WebGLRenderer.prototype.render = function(scene, camera) {
     this.gl.useProgram(element.geometry.program);
     this.gl.uniformMatrix4fv(element.geometry.uniforms, false, matrix.m);
 
-    //PARTICLES
+    //check material.doubleSided and connect/disconnect culling
+
     //this.gl.drawArrays(this.gl.POINTS, 0, element.geometry.vbuffer.length / 3);
-    //LINE STRIP
     //this.gl.drawArrays(this.gl.LINES, 0, element.geometry.vbuffer.length / 3);
     //this.gl.drawArrays(this.gl.LINE_STRIP, 0, element.geometry.vbuffer.length / 3);
     //this.gl.drawArrays(this.gl.LINE_LOOP, 0, element.geometry.vbuffer.length / 3);
@@ -113,15 +113,6 @@ CANDY3D.WebGLRenderer.prototype.buildProgram = function(element) {
       id++;
     }
   }
-  //created shader buffer
-  element.geometry.sbuffer = new Float32Array(element.geometry.vbuffer.length);
-
-  for (var k = 0; k < element.geometry.sbuffer.length; k += 1) {
-    var r = Math.random();
-    element.geometry.sbuffer[k + 0] = r * 255;
-    element.geometry.sbuffer[k + 1] = r * 255;
-    element.geometry.sbuffer[k + 2] = r * 255;
-  }
 
   //build the program
   if (element.geometry.program === null) {
@@ -131,38 +122,39 @@ CANDY3D.WebGLRenderer.prototype.buildProgram = function(element) {
     element.geometry.uniforms = this.gl.getUniformLocation(element.geometry.program, "u_matrix");
   }
 
-  //TODO: check the material, and depending on that, change program
   var positionLocation = this.gl.getAttribLocation(element.geometry.program, "a_position");
-  var colorLocation = this.gl.getAttribLocation(element.geometry.program, "a_color");
 
   if (element.geometry.b1 === null) {
-    console.log('created b1');
+    console.log('creating position buffer for', element.toString());
+
     element.geometry.b1 = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, element.geometry.b1);
     this.gl.enableVertexAttribArray(positionLocation);
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, element.geometry.vbuffer, this.gl.STATIC_DRAW);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(element.geometry.vbuffer), this.gl.STATIC_DRAW);
   }
 
   if (element.geometry.b2 === null) {
-    console.log('created b2');
+    console.log('creating color buffer for', element.toString());
+    var colorLocation = this.gl.getAttribLocation(element.geometry.program, "a_color");
+
+    for (var k = 0; k < element.geometry.fbuffer.length; k +=4) {
+      element.geometry.fbuffer[k + 0] = Math.random();
+      element.geometry.fbuffer[k + 1] = Math.random();
+      element.geometry.fbuffer[k + 2] = Math.random();
+      element.geometry.fbuffer[k + 3] = 1;
+    }
+
     element.geometry.b2 = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, element.geometry.b2);
     this.gl.enableVertexAttribArray(colorLocation);
-    this.gl.vertexAttribPointer(colorLocation, 3, this.gl.UNSIGNED_BYTE, true, 0, 0);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Uint8Array(element.geometry.sbuffer), this.gl.STATIC_DRAW);
+    this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, element.geometry.fbuffer, this.gl.STATIC_DRAW);
   }
   // Create a buffer for geometry
-  //TODO, review the creation of buffers at runtime.
+  //TODO, review the creation of buffers at runtime. if geometry isDirty
   this.gl.bindBuffer(this.gl.ARRAY_BUFFER, element.geometry.b1);
-  //this.gl.enableVertexAttribArray(positionLocation);
-  //this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0);
+  this.gl.enableVertexAttribArray(positionLocation);
+  this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0);
   this.gl.bufferData(this.gl.ARRAY_BUFFER, element.geometry.vbuffer, this.gl.STATIC_DRAW);
-
-  //create a buffer for colors.
-  //var cbuffer = this.gl.createBuffer();
-  //this.gl.bindBuffer(this.gl.ARRAY_BUFFER, element.geometry.b2);
-  //this.gl.enableVertexAttribArray(colorLocation);
-  //this.gl.vertexAttribPointer(colorLocation, 3, this.gl.UNSIGNED_BYTE, true, 0, 0);
-  //this.gl.bufferData(this.gl.ARRAY_BUFFER, new Uint8Array(element.geometry.sbuffer), this.gl.STATIC_DRAW);
 };

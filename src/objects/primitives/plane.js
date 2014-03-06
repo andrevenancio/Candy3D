@@ -39,7 +39,7 @@ CANDY3D.Plane.prototype.build = function(width, height) {
       var x = ix * segment_width - width_half;
       var y = iz * segment_height - height_half;
 
-      this.geometry.vertices.push(new CANDY3D.Vector3(x, -y, 0));
+      this.geometry.vertices.push(new CANDY3D.Vector3(x, y, 0));
     }
   }
 
@@ -52,11 +52,24 @@ CANDY3D.Plane.prototype.build = function(width, height) {
       var c = (ix + 1) + gridX1 * (iz + 1);
       var d = (ix + 1) + gridX1 * iz;
 
-      this.geometry.faces.push(new CANDY3D.Face([a, d, b]));
-      this.geometry.faces.push(new CANDY3D.Face([b, d, c]));
+      var faceA = new CANDY3D.Face([b, d, a]);
+      faceA.calculateCentroid(this.geometry.vertices[b], this.geometry.vertices[d], this.geometry.vertices[a])
+      faceA.calculateNormal(this.geometry.vertices[b], this.geometry.vertices[d], this.geometry.vertices[a])
+
+      var faceB = new CANDY3D.Face([c, d, b]);
+      faceB.calculateCentroid(this.geometry.vertices[c], this.geometry.vertices[d], this.geometry.vertices[b])
+      faceB.calculateNormal(this.geometry.vertices[c], this.geometry.vertices[d], this.geometry.vertices[b])
+
+      //ORIGINAL:
+      //this.geometry.faces.push(new CANDY3D.Face([a, d, b]));
+      //this.geometry.faces.push(new CANDY3D.Face([b, d, c]));
+
+      //CORRECTED
+      this.geometry.faces.push(faceA);
+      this.geometry.faces.push(faceB);
     }
   }
 
   this.geometry.vbuffer = new Float32Array(this.geometry.faces.length * 3 * 3);
-  this.geometry.sbuffer = new Float32Array(this.geometry.vertices.length * 3 * 3);
+  this.geometry.fbuffer = new Float32Array(this.geometry.faces.length * 3 * 4);
 };

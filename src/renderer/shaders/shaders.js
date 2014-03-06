@@ -53,3 +53,13 @@ CANDY3D.Shaders.FRAGMENT = '' +
   'void main() {' +
   '  gl_FragColor = v_color;' +
   '}';
+
+CANDY3D.Shaders.FRAGMENT_FLAT = '' +
+  'precision mediump float;' +
+  'varying vec3 v_vertexNormal;' +
+  'void main() {' +
+  '  vec4 col = vec4(1,1,0,1);' +
+  '  vec3 lightDir = normalize(vec3(0.5,0,-1));' +
+  '  float diffuse = dot(v_vertexNormal, lightDir);' +
+  '  gl_FragColor = vec4(col.r*diffuse, col.g*diffuse, col.b*diffuse, col.a);' +
+  '}';

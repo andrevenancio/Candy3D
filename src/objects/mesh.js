@@ -12,7 +12,7 @@ CANDY3D.Mesh = function() {
     vertices: [],
     faces: [],
     vbuffer: null,
-    sbuffer: null,
+    fbuffer: null,
     program: null,
     uniforms: null,
     b1: null,

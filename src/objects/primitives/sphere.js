@@ -67,5 +67,5 @@ CANDY3D.Sphere.prototype.build = function(radius, widthSegments, heightSegments,
     }
   }
   this.geometry.vbuffer = new Float32Array(this.geometry.faces.length * 3 * 3);
-  this.geometry.sbuffer = new Float32Array(this.geometry.vertices.length * 3 * 3);
+  this.geometry.fbuffer = new Float32Array(this.geometry.faces.length * 3 * 4);
 };
