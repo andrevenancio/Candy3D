@@ -32,3 +32,8 @@ window.onload = function() {
 ### Change Log ###
 2013 03 27 - **0.0.1**
 * Base code.
+
+
+
+
+[![Analytics](https://ga-beacon.appspot.com/UA-UA-46159137-2/Candy3D/index)](https://github.com/igrigorik/ga-beacon)
